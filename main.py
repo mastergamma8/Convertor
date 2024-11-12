@@ -24,7 +24,8 @@ def download_audio(url: str):
             'preferredcodec': 'mp3',
             'preferredquality': '192',
         }],
-        'outtmpl': '%(id)s.mp3'
+        'outtmpl': '%(id)s.mp3',
+        'ffmpeg_location': '/path/to/ffmpeg'  # Укажите полный путь к ffmpeg
     }
 
     try:
@@ -40,7 +41,8 @@ def download_audio(url: str):
 def download_video(url: str):
     ydl_opts = {
         'format': 'best',
-        'outtmpl': '%(id)s.mp4'
+        'outtmpl': '%(id)s.mp4',
+        'ffmpeg_location': '/path/to/ffmpeg'  # Укажите полный путь к ffmpeg
     }
 
     try:
@@ -88,7 +90,7 @@ async def callback_query_handler(callback_query: CallbackQuery):
         filename = download_video(url)
         if filename:
             file = FSInputFile(filename)
-            await callback_query.message.reply_document(file)
+            await callback_query.message.reply_video(file)
             os.remove(filename)
         else:
             await callback_query.message.reply("Не удалось загрузить видео. Попробуйте другую ссылку.")
